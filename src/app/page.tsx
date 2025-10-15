@@ -7,7 +7,6 @@ const Home = () => {
   const [previousOperand, setPreviousOperand] = useState('');
   const [operation, setOperation] = useState('');
   const [isCalculated, setIsCalculated] = useState(false);
-  const [memory, setMemory] = useState(0); 
 
   const click = (item) => {
     if (!isNaN(item) || item === '・') {
@@ -44,13 +43,6 @@ const Home = () => {
         setCurrentOperand('');
         setPreviousOperand('');
         setOperation('');
-        setMemory(0);
-        break;
-
-      case 'M+':
-        if (currentOperand === '' || isNaN(parseFloat(currentOperand))) return;
-        setMemory(prevMemory => prevMemory + parseFloat(currentOperand));
-        setIsCalculated(true); 
         break;
 
       case '=':
