@@ -9,26 +9,37 @@ const Home = () => {
   const [isCalculated, setIsCalculated] = useState(false);
 
   const click = (item: string) => {
-    if (item === '・') {
+    if (!isNaN(Number(item))) {
       if (isCalculated) {
         setCurrentOperand(item);
         setIsCalculated(false);
+      } else {
+        setCurrentOperand(prev => prev + item);
+      }
+      return;
+    }
+
+    if (item === '・') {
+      if (isCalculated) {
+        setCurrentOperand('0' + item);
+        setIsCalculated(false);
         return;
       }
-      if (item === '・' && currentOperand.includes('・')) return;
+      if (currentOperand.includes('・')) return;
       setCurrentOperand(prev => prev + item);
       return;
     }
 
     setIsCalculated(false);
 
-    switch(item){
+    switch (item) {
       case '+':
       case '-':
       case '×':
       case '÷':
         if (currentOperand === '') return;
         if (previousOperand !== '') {
+            calculate();
         }
         setOperation(item);
         setPreviousOperand(currentOperand);
@@ -49,26 +60,30 @@ const Home = () => {
         if (operation === '' || previousOperand === '' || currentOperand === '') {
           return;
         }
-        let result;
-        const prev = parseFloat(previousOperand);
-        const current = parseFloat(currentOperand);
-
-        if (isNaN(prev) || isNaN(current)) return;
-
-        switch (operation) {
-          case '+': result = prev + current; break;
-          case '-': result = prev - current; break;
-          case '×': result = prev * current; break;
-          case '÷': result = prev / current; break;
-          default: return;
-        }
-        setCurrentOperand(String(result));
+        calculate();
         setPreviousOperand('');
         setOperation('');
         setIsCalculated(true);
         break;
     }
   }
+
+  const calculate = () => {
+    let result;
+    const prev = parseFloat(previousOperand.replace('・', '.'));
+    const current = parseFloat(currentOperand.replace('・', '.'));
+
+    if (isNaN(prev) || isNaN(current)) return;
+
+    switch (operation) {
+      case '+': result = prev + current; break;
+      case '-': result = prev - current; break;
+      case '×': result = prev * current; break;
+      case '÷': result = prev / current; break;
+      default: return;
+    }
+    setCurrentOperand(String(result));
+  };
 
   const downButtons = [
     '7', '8', '9', 'CE', 'O/C',
