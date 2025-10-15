@@ -8,8 +8,8 @@ const Home = () => {
   const [operation, setOperation] = useState('');
   const [isCalculated, setIsCalculated] = useState(false);
 
-  const click = (item) => {
-    if (!isNaN(item) || item === '・') {
+  const click = (item: string) => {
+    if (item === '・') {
       if (isCalculated) {
         setCurrentOperand(item);
         setIsCalculated(false);
@@ -91,15 +91,15 @@ const Home = () => {
         </div>
         
         <div className="grid grid-cols-5 gap-2">
-          {downButtons.map((button, index) => {
-            const isOperator = ['×', '÷', '+', '-', '=', 'M+'].includes(String(button));
-            const isClear = ['CE', 'O/C'].includes(String(button));
+          {downButtons.map((item, index) => {
+            const isOperator = ['×', '÷', '+', '-', '=', 'M+'].includes(String(item));
+            const isClear = ['CE', 'O/C'].includes(String(item));
             return(
               <button  
                 key={index} 
-                onClick={() => {click(button)}}
+                onClick={() => {click(item)}}
                 className={`text-3xl h-16 rounded-lg transition-colors ${isOperator ? 'bg-orange-500 text-white hover:bg-orange-400 active:bg-orange-600' : ''} ${isClear ? 'bg-gray-400 text-black hover:bg-gray-300 active:bg-gray-500' : ''} ${!isOperator && !isClear ? 'bg-gray-200 text-black hover:bg-gray-100 active:bg-gray-300' : ''}`}>
-                {button}
+                {item}
               </button>
             )
           })}
